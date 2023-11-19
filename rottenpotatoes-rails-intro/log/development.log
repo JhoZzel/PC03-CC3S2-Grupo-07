@@ -272,3 +272,112 @@ Processing by MoviesController#index as HTML
   Rendered movies/index.html.erb within layouts/application (1.8ms)
   Rendered layouts/_flash.erb (0.0ms)
 Completed 200 OK in 11ms (Views: 11.0ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2023-11-19 18:20:37 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by MoviesController#index as HTML
+  [1m[35mMovie Load (0.1ms)[0m  SELECT "movies".* FROM "movies"
+  Rendered movies/index.html.erb within layouts/application (7.9ms)
+  Rendered layouts/_flash.erb (0.4ms)
+Completed 200 OK in 332ms (Views: 330.8ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:20:49 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[36mMovie Load (0.2ms)[0m  [1mSELECT "movies".* FROM "movies"[0m
+  Rendered movies/index.html.erb within layouts/application (2.0ms)
+  Rendered layouts/_flash.erb (0.1ms)
+Completed 200 OK in 22ms (Views: 22.1ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:20:51 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[35mMovie Load (0.1ms)[0m  SELECT "movies".* FROM "movies"
+  Rendered movies/index.html.erb within layouts/application (1.6ms)
+  Rendered layouts/_flash.erb (0.1ms)
+Completed 200 OK in 23ms (Views: 22.8ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:20:52 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[36mMovie Load (0.1ms)[0m  [1mSELECT "movies".* FROM "movies"[0m
+  Rendered movies/index.html.erb within layouts/application (7.7ms)
+  Rendered layouts/_flash.erb (0.0ms)
+Completed 200 OK in 55ms (Views: 54.7ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:31 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[35mMovie Load (0.1ms)[0m  SELECT "movies".* FROM "movies"  ORDER BY title asc
+  Rendered movies/index.html.erb within layouts/application (9.2ms)
+  Rendered layouts/_flash.erb (0.5ms)
+Completed 200 OK in 181ms (Views: 179.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:33 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[36mMovie Load (0.2ms)[0m  [1mSELECT "movies".* FROM "movies"  ORDER BY title asc[0m
+  Rendered movies/index.html.erb within layouts/application (2.4ms)
+  Rendered layouts/_flash.erb (0.0ms)
+Completed 200 OK in 10ms (Views: 9.6ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:34 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[35mMovie Load (0.2ms)[0m  SELECT "movies".* FROM "movies"  ORDER BY title asc
+  Rendered movies/index.html.erb within layouts/application (1.7ms)
+  Rendered layouts/_flash.erb (0.0ms)
+Completed 200 OK in 10ms (Views: 9.7ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:35 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[36mMovie Load (0.2ms)[0m  [1mSELECT "movies".* FROM "movies"  ORDER BY title asc[0m
+  Rendered movies/index.html.erb within layouts/application (3.0ms)
+  Rendered layouts/_flash.erb (0.1ms)
+Completed 200 OK in 27ms (Views: 26.0ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=rating&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:35 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"rating", "direction"=>"asc"}}
+  [1m[35mMovie Load (0.2ms)[0m  SELECT "movies".* FROM "movies"  ORDER BY rating asc
+  Rendered movies/index.html.erb within layouts/application (2.2ms)
+  Rendered layouts/_flash.erb (0.0ms)
+Completed 200 OK in 24ms (Views: 23.9ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=title&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:38 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"title", "direction"=>"asc"}}
+  [1m[36mMovie Load (0.1ms)[0m  [1mSELECT "movies".* FROM "movies"  ORDER BY title asc[0m
+  Rendered movies/index.html.erb within layouts/application (2.1ms)
+  Rendered layouts/_flash.erb (0.1ms)
+Completed 200 OK in 52ms (Views: 51.5ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=rating&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:42 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"rating", "direction"=>"asc"}}
+  [1m[35mMovie Load (0.1ms)[0m  SELECT "movies".* FROM "movies"  ORDER BY rating asc
+  Rendered movies/index.html.erb within layouts/application (1.5ms)
+  Rendered layouts/_flash.erb (0.0ms)
+Completed 200 OK in 11ms (Views: 10.9ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/movies?order%5Bcolumn%5D=release_date&order%5Bdirection%5D=asc" for 127.0.0.1 at 2023-11-19 18:23:45 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"order"=>{"column"=>"release_date", "direction"=>"asc"}}
+  [1m[36mMovie Load (0.1ms)[0m  [1mSELECT "movies".* FROM "movies"  ORDER BY release_date asc[0m
+  Rendered movies/index.html.erb within layouts/application (2.0ms)
+  Rendered layouts/_flash.erb (0.5ms)
+Completed 200 OK in 13ms (Views: 12.9ms | ActiveRecord: 0.1ms)
