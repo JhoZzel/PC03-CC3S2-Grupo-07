@@ -14,6 +14,13 @@ class MoviesController < ApplicationController
 
     # Obtener todas las clasificaciones posibles para construir las casillas de verificación
     @all_ratings = Movie.all_ratings
+
+      # Verifica si se proporciona un orden y configura las variables de control
+      if params[:order].present?
+        @order_column = params[:order][:column]
+        @order_direction = params[:order][:direction]
+        @movies = @movies.order("#{@order_column} #{@order_direction}")
+      end
   end 
 
   def new
