@@ -1,5 +1,4 @@
 class MoviesController < ApplicationController
-
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -7,9 +6,15 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    # Obtener todas las películas o filtrar por calificaciones seleccionadas
+    @movies = params[:ratings] ? Movie.with_ratings(params[:ratings].keys) : Movie.all
+
+    # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
+    @ratings_to_show = params[:ratings]&.keys
+
+    # Obtener todas las clasificaciones posibles para construir las casillas de verificación
     @all_ratings = Movie.all_ratings
-  end
+  end 
 
 
   def new
