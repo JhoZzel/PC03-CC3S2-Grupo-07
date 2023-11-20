@@ -7,10 +7,10 @@ class MoviesController < ApplicationController
 
   def index
     # Obtener todas las películas o filtrar por calificaciones seleccionadas
-    @movies = params[:ratings] ? Movie.with_ratings(params[:ratings].keys) : Movie.all
+    @movies = Movie.all
 
     # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
-    @ratings_to_show = params[:ratings]&.keys
+    @ratings_to_show = params[:ratings] || []
 
     # Obtener todas las clasificaciones posibles para construir las casillas de verificación
     @all_ratings = Movie.all_ratings
@@ -21,7 +21,13 @@ class MoviesController < ApplicationController
       @order_direction = params[:order][:direction]
       @movies = @movies.order("#{@order_column} #{@order_direction}")
     end
-  end 
+
+    # Filtramos las películas por clasificaciones seleccionadas
+    if params[:ratings].present?
+      selected_ratings = params[:ratings].keys
+      @movies = @movies.with_ratings(selected_ratings)
+    end
+  end
 
 
   def new
