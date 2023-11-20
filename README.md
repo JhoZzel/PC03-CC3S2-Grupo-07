@@ -22,7 +22,7 @@ Una vez hecho esto, ejecutamos `git add` para seleccionar los cambios que querem
 
 ![](img/5.png)
 
-Ahora, ejecutamos un `git branch`, para poder crear una nueva rama en nuestro repositorio. Las ramas en Git permiten trabajar en funcionalidades o correcciones por separado, sin afectar la rama principal. Luego, con `git remote`, establecemos conexiones con repositorios remotos, como GitHub, para facilitar la colaboración y compartir nuestro código. Finalmente, al usar `git push`, subimos nuestros commits al repositorio remoto, asegurando que otros colaboradores puedan acceder a nuestros cambios y mantener una versión actualizada del proyecto. Este conjunto de comandos respalda un flujo de trabajo colaborativo y eficiente en el desarrollo de software.
+Ahora, ejecutamos un `git branch`, para poder crear una nueva rama en nuestro repositorio. Luego, con `git remote`, establecemos conexiones con repositorios remotos, como GitHub, para facilitar la colaboración y compartir nuestro código. Finalmente, al usar `git push`, subimos nuestros commits al repositorio remoto, asegurando que otros colaboradores puedan acceder a nuestros cambios y mantener una versión actualizada del proyecto.
 
 ![](img/6.png)
 ![](img/7.png)
@@ -35,15 +35,15 @@ Una vez establecida la infraestructura inicial de nuestro proyecto, procederemos
 ![](img/10.png)
 
 
-Usando el `git branch Parte01-Joel` pudimos crear una nueva rama llamada `Parte01-Joel`. Luego, se realiza un cambio a esta nueva rama con el comando `git checkout Parte01-Joel`. Este proceso establece una rama separada para trabajar en una parte específica del proyecto, permitiendo a "Joel" realizar cambios y commits de manera aislada en esa parte del código sin afectar la rama principal.
+Usando el `git branch Parte01-Joel` pudimos crear una nueva rama llamada `Parte01-Joel`. Luego, se realiza un cambio a esta nueva rama con el comando `git checkout Parte01-Joel`.
 
-Ahora bien, vamos a trabajar en esta rama siguiendo las demás instrucciones de la guía. Para comenzar, se indica que ejecutemos el comando `bundle install --without production`. Este comando se utiliza para instalar las gemas y dependencias especificadas en el archivo `Gemfile`, excluyendo aquellas relacionadas con el entorno de producción. De esta manera, se asegura la instalación de las dependencias necesarias para el desarrollo sin cargar aquellas destinadas únicamente al entorno de producción, optimizando así el entorno de trabajo.
+Ahora bien, vamos a trabajar en esta rama siguiendo las demás instrucciones de la guía. Para comenzar, se indica que ejecutemos el comando `bundle install --without production`. Este comando se utiliza para instalar las gemas y dependencias especificadas en el archivo `Gemfile`, excluyendo aquellas relacionadas con el entorno de producción.
 
 ![](img/11.png)
 ![](img/12.png)
 
 
-Finalmente, ejecutamos la migración inicial mediante el comando bin/rake db:migrate. Esta acción, al ser la primera migración, también implica la creación de la base de datos. El comando se encarga de aplicar las migraciones definidas en el proyecto, estableciendo la estructura inicial de la base de datos de acuerdo con las especificaciones proporcionadas en los archivos de migración.
+Finalmente, ejecutamos la migración inicial mediante el comando bin/rake db:migrate. Esta acción, al ser la primera migración, también implica la creación de la base de datos.
 
 ![](img/13.png)
 
@@ -92,7 +92,7 @@ movies.each do |movie|
 end
 ```
 
-Cada hash dentro del arreglo `movies` representa un conjunto de datos para una película específica. La tarea de semilla (`rake db:seed`) utiliza estos datos para poblar la base de datos con valores iniciales. La estructura del archivo de semilla permite la creación eficiente de registros en la base de datos cuando sea necesario inicializarla con datos predefinidos. En resumen, al ejecutar `rake db:seed`, se insertarán estos datos en la tabla correspondiente de la base de datos, proporcionando un conjunto inicial de registros para trabajar en la aplicación.
+Cada hash dentro del arreglo `movies` representa un conjunto de datos para una película específica. La tarea de semilla (`rake db:seed`) utiliza estos datos para poblar la base de datos con valores iniciales. La estructura del archivo de semilla permite la creación eficiente de registros en la base de datos cuando sea necesario inicializarla con datos predefinidos.
 
 Muy bien ahora vamos a desplegar nuestra app para poder visualizarla en nuestra máquina local, con ayuda del comando `rails server`
 
@@ -101,11 +101,6 @@ Muy bien ahora vamos a desplegar nuestra app para poder visualizarla en nuestra 
 Se puede observar que se ha iniciado el servidor de desarrollo de Rails. Al arrancar, el servidor informa que está utilizando WEBrick como servidor web y que la aplicación Rails 4.2.11 está en ejecución en el entorno de desarrollo. La aplicación estará disponible para su visualización en la dirección http://localhost:3000, así que nos dirigimos a dicho puerto desde el navegador para poder observar.
 
 ![](img/16.png)
-
-## Despliegue inicial de Heroku / Render
-@Angello
-
-
 
 
 ## Parte 1: filtrar la lista de películas por clasificación
@@ -162,8 +157,6 @@ En esta primera parte, se procede a crear la sección de filtrado en el formular
 ```
 Las casillas de verificación se generan dinámicamente a partir de las clasificaciones disponibles en el modelo `Movie`. El formulario también incluye un botón "Refresh" que, al ser presionado, actualizará la lista de películas según las clasificaciones MPAA seleccionadas.
 
-Es importante destacar que el código proporcionado utiliza `form_tag` y `check_box_tag` para generar el formulario y las casillas de verificación de manera adecuada. Además, se implementa lógica condicional para asegurar que las casillas de verificación estén inicialmente marcadas cuando el usuario visita la página por primera vez. Este formulario establece la base para la implementación del filtrado dinámico de películas basado en las clasificaciones MPAA seleccionadas por el usuario.
-
 Sin embargo aún hay detalles que falta cambiar, es así en movie.rb (app/models/movie.rb), definimos un método de clase all_ratings en el modelo Movie. Este método devuelve un array con todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R'). Este método se convierte en un método de clase porque se llama directamente en la clase Movie y no en una instancia de la clase. 
 
 ```rb
@@ -196,7 +189,6 @@ El controlador debe configurar un valor predeterminado para `@ratings_to_show` i
 Si no se configura un valor predeterminado para `@ratings_to_show`, y el usuario no ha marcado ninguna casilla previamente, `@ratings_to_show` sería `nil`. En este caso, al evaluar `nil.include?(rating)` en la vista, se produciría un error, ya que `nil` no es una colección enumerable.
 
 Al configurar un valor predeterminado, como incluir todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R'), se garantiza que, incluso si el usuario no ha marcado ninguna casilla, `@ratings_to_show` sea una colección válida y la evaluación `@ratings_to_show.include?(rating)` sea segura en la vista. Esto permite que, al presionar el botón "Refresh" sin seleccionar ninguna clasificación específica, se muestren todas las películas y se marquen todas las casillas de verificación por defecto.
-
 
 Hasta el momento, hemos observado que la aplicación no implementa correctamente la funcionalidad de filtrado; aunque los botones de clasificación están presentes, no tienen un impacto real. Para corregir esto, se han realizado modificaciones sustanciales tanto en la clase controladora como en el modelo movie.rb. A continuación, se detallan los cambios realizados para abordar esta situación.
 
@@ -241,4 +233,117 @@ end
 2. `self.all_ratings`: Este método de clase devuelve un array con todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R').
 
 ## Parte 2: Ordenar la lista de películas
+
+Antes de comenzar, tenemos que trabajar en nuestra rama. Para esto vamos a crear una rama llamada `Parte02-Franklin`, y nos moveremos a esta rama usando el comando `git checkout Parte02-Franklin`.
+
+![f4](img/f4.png)
+
+Ahora si comenzamos a trabajar, ***Que se busca?*** Se busca habilitar la ordenación de la tabla a través de enlaces clicables en los encabezados de las columnas `Movie Title` y `Release Date`. Al hacer clic en un encabezado, la lista debería recargarse y ordenarse en función de la columna seleccionada. Por ejemplo, al hacer clic en "Release  Date", las películas deberían mostrarse con las más antiguas primero. Además, se resalta visualmente el encabezado de la columna seleccionada. 
+
+Para implementar esto, se emplean enlaces HTML con la ayuda de la función `link_to`. Cada enlace apunta a la ruta RESTful correspondiente para recuperar la lista de películas ordenada. Se asignan identificadores únicos (IDs) a los enlaces para `title` y `release_date` para facilitar la manipulación del Modelo de objecto de documento (Document Object Model (**DOM**)). También se aplican clases CSS, como **"hilite"** y una clase de **color de Bootstrap**, para destacar el encabezado seleccionado.
+~~~ruby
+## Realizamos este cambio para darle estilo a nuestros encabezados
+ th.hilite {
+    background-color: #ffc107; /* Amarillo anaranjado de Bootstrap */
+  }
+~~~
+
+~~~erb
+# Realizamos este cambio en index.html.erb
+<table class="table table-striped col-md-12" id="movies">
+  <thead>
+    <tr>
+      <th class="<%= 'hilite' if @order_column == 'title' %>">
+        <%= link_to "Movie Title", movies_path(order: { column: 'title', direction: 'asc' }) %>
+      </th>
+      <th class="<%= 'hilite' if @order_column == 'rating' %>">
+        <%= link_to "Rating", movies_path(order: { column: 'rating', direction: 'asc' }) %>
+      </th>
+      <th class="<%= 'hilite' if @order_column == 'release_date' %>">
+        <%= link_to "Release Date", movies_path(order: { column: 'release_date', direction: 'asc' }) %>
+      </th>
+      <th>More Info</th>
+    </tr>
+  </thead>
+~~~
+
+y finalmente editamos nuestro controlador de la siguiente manera. Este código carga todas las películas y las ordena según las especificaciones proporcionadas en los parámetros de la solicitud, si los hay. 
+
+~~~ruby
+class MoviesController < ApplicationController
+  def index
+    @movies = Movie.all
+	
+    if params[:order].present?
+      @order_column = params[:order][:column]
+      @order_direction = params[:order][:direction]
+      @movies = @movies.order("#{@order_column} #{@order_direction}")
+    end
+  end
+
+end
+~~~
+
+Se manda a ejecutar el servidor,
+
+![f0](img/f0.png)
+
+Ahora podemos observar en el localhost lo siguiente.
+
+![f1](img/f1.png)
+
+Ahora debemos recordar tanto el filtro de clasificación como el ordenamiento de los encabezados. Para esto vamos hacer unos cambios en el `index.html.erb`. Vamos a modificar la llamada a `movies_path` para incluir informacion sobre las calificaciones seleccionadas.
+
+~~~erb
+<thead>
+  <tr>
+    <th class="<%= 'hilite' if @order_column == 'title' %>">
+      <%= link_to "Movie Title", movies_path(order: { column: 'title', direction: 'asc' }, ratings: @ratings_to_show) %>
+    </th>
+    <th class="<%= 'hilite' if @order_column == 'rating' %>">
+      <%= link_to "Rating", movies_path(order: { column: 'rating', direction: 'asc' }, ratings: @ratings_to_show) %>
+    </th>
+    <th class="<%= 'hilite' if @order_column == 'release_date' %>">
+      <%= link_to "Release Date", movies_path(order: { column: 'release_date', direction: 'asc' }, ratings: @ratings_to_show) %>
+    </th>
+    <th>More Info</th>
+  </tr>
+</thead>
+~~~
+
+Luego vamos a editar el controlador, ahora primero vamos obtener todas las peliculas que se asignaran a `@movies`, para luego configurar las variables relacionadas con las clasificaciones y ordenamiento. Ya despues, si se proporcionan clasificaciones `(params[:ratings].present?)`, filtra las películas usando el método `with_ratings`. Finalmente, si se proporciona un orden `(params[:order].present?)`, ordena las películas en función de los parámetros de orden recibidos.
+
+~~~ruby
+  def index
+    # Obtener todas las películas o filtrar por calificaciones seleccionadas
+    @movies = Movie.all
+
+    # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
+    @ratings_to_show = params[:ratings] || []
+
+    # Obtener todas las clasificaciones posibles para construir las casillas de verificación
+    @all_ratings = Movie.all_ratings
+
+    # Verifica si se proporciona un orden y configura las variables de control
+    if params[:order].present?
+      @order_column = params[:order][:column]
+      @order_direction = params[:order][:direction]
+      @movies = @movies.order("#{@order_column} #{@order_direction}")
+    end
+
+    # Filtramos las películas por clasificaciones seleccionadas
+    if params[:ratings].present?
+      selected_ratings = params[:ratings].keys
+      @movies = @movies.with_ratings(selected_ratings)
+    end
+  end
+~~~
+Finalizando esta seccion, podemos observar que si recuerda ahora el orden de encabezado y la clasificacion. 
+
+![f2](img/f2.png)
+
+Durante este apartado hemos realizado varios `commits` que se pueden visualizar en el github compartido, pero recordemos que estamos en una rama llamada `Parte02-Franklin`. Para poder actualizar la rama `main` tenemos que realizar un `merge`.
+Nota: Tenemos que encontrarnos en la rama `main`, y desde ahi realizar el `merge`.
+
+![f3](img/f3.png)
 
