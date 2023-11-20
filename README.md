@@ -22,7 +22,7 @@ Una vez hecho esto, ejecutamos `git add` para seleccionar los cambios que querem
 
 ![](img/5.png)
 
-Ahora, ejecutamos un `git branch`, para poder crear una nueva rama en nuestro repositorio. Las ramas en Git permiten trabajar en funcionalidades o correcciones por separado, sin afectar la rama principal. Luego, con `git remote`, establecemos conexiones con repositorios remotos, como GitHub, para facilitar la colaboración y compartir nuestro código. Finalmente, al usar `git push`, subimos nuestros commits al repositorio remoto, asegurando que otros colaboradores puedan acceder a nuestros cambios y mantener una versión actualizada del proyecto. Este conjunto de comandos respalda un flujo de trabajo colaborativo y eficiente en el desarrollo de software.
+Ahora, ejecutamos un `git branch`, para poder crear una nueva rama en nuestro repositorio. Luego, con `git remote`, establecemos conexiones con repositorios remotos, como GitHub, para facilitar la colaboración y compartir nuestro código. Finalmente, al usar `git push`, subimos nuestros commits al repositorio remoto, asegurando que otros colaboradores puedan acceder a nuestros cambios y mantener una versión actualizada del proyecto.
 
 ![](img/6.png)
 ![](img/7.png)
