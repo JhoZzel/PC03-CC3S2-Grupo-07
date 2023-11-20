@@ -17,7 +17,7 @@ class MoviesController < ApplicationController
 
     # Verifica si queremos ver sin restricciones
     if params[:order].nil? && params[:ratings].nil?
-      ## Estado sin pasar por los enlaces especiales
+      session.clear
     end
 
     # Verifica si se proporciona un orden y configura las variables de control
