@@ -17,7 +17,7 @@ class MoviesController < ApplicationController
 
     # Verifica si queremos ver sin restricciones
     if params[:order].nil? && params[:ratings].nil?
-      session.clear
+      # session[:ratings] = ['G', 'PG', 'PG-13', 'R']
     end
 
     # Verifica si se proporciona un orden y configura las variables de control
@@ -38,7 +38,6 @@ class MoviesController < ApplicationController
       @movies = @movies.with_ratings(selected_ratings)
       session[:ratings] = params[:ratings]
     end
-
   end
 
   def new
