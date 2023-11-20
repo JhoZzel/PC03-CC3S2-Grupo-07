@@ -17,13 +17,13 @@ class MoviesController < ApplicationController
 
     # Verifica si queremos ver sin restricciones
     if params[:order].nil? && params[:ratings].nil?
-      # session[:ratings] = ['G', 'PG', 'PG-13', 'R']
+      session[:ratings] = nil
     end
 
     # Verifica si se proporciona un orden y configura las variables de control
     if params[:order].nil? && !session[:order].nil?
         params[:order] = session[:order]
-    else 
+    elsif !params[:order].nil?
       @order_column = params[:order][:column]
       @order_direction = params[:order][:direction]
       @movies = @movies.order("#{@order_column} #{@order_direction}")
@@ -33,7 +33,7 @@ class MoviesController < ApplicationController
     # Filtramos las películas por clasificaciones seleccionadas
     if params[:ratings].nil? && !session[:ratings].nil?
         params[:ratings] = session[:ratings]
-    else 
+    elsif !params[:ratings].nil?
       selected_ratings = params[:ratings].keys
       @movies = @movies.with_ratings(selected_ratings)
       session[:ratings] = params[:ratings]
