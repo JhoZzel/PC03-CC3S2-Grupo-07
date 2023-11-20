@@ -361,15 +361,15 @@ Ejemplo:
 
 Escogemos nuestro filtro:
 
-![a1](img/a1.png)
+![a1](img/a1.PNG)
 
 Ingresamos a ver el detalle de una película:
 
-![a2](img/a2.png)
+![a2](img/a2.PNG)
 
 Y volvemos a la lista de películas:
 
-![a3](img/a3.png)
+![a3](img/a3.PNG)
 
 Podemos observar que la lista volvió a su estaado base.
 
