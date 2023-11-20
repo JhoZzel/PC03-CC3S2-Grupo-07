@@ -16,23 +16,26 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
 
     # Verifica si se proporciona un orden y configura las variables de control
+
+    if params[:ratings].nil? && !session[:ratings].nil?
+      params[:ratings] = session[:ratings]
+    end
+    
     if params[:order].present?
       @order_column = params[:order][:column]
       @order_direction = params[:order][:direction]
       @movies = @movies.order("#{@order_column} #{@order_direction}")
     end
-
+    
     # Filtramos las películas por clasificaciones seleccionadas
-    if params[:ratings].present?
-      # params[:ratings] = session[:ratings]
-      selected_ratings = params[:ratings].keys
-      @movies = @movies.with_ratings(selected_ratings)
-      # session[:ratings] = selected_ratings
-    else
+    if params[:ratings].nil? && !session[:ratings].nil?
       params[:ratings] = session[:ratings]
     end
 
-    session[:ratings] = params[:ratings]
+    if params[:ratings].present?
+      selected_ratings = params[:ratings].keys
+      @movies = @movies.with_ratings(selected_ratings)
+    end
 
   end
 
