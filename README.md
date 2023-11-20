@@ -347,3 +347,30 @@ Nota: Tenemos que encontrarnos en la rama `main`, y desde ahi realizar el `merge
 
 ![f3](img/f3.png)
 
+## Parte 3: Recuerda la configuración de clasificación y filtrado
+
+Ahora tenemos el problema que cuando por ejemplo ingresamos a ver los detalles de una pelicula, este no se guarda al regresar a la vista `index`
+
+### Pregunta: ¿Por qué se "olvida" la configuración de clasificación/filtrado de casillas de verificación cuando navegas a la página Movie Details y luego hace clic en Back to List button?
+
+La vista de detalles de las películas y la vista de lista de películas operan en contextos separados y no comparten directamente el estado entre sí.
+
+Cuando navegas a la página `show`, la información específica de esa película esté siendo cargada y la configuración de filtrado está siendo guardada persistentemente entre las diferentes vistas.
+
+Ejemplo:
+
+Escogemos nuestro filtro:
+
+![a1](img/a1.png)
+
+Ingresamos a ver el detalle de una película:
+
+![a2](img/a2.png)
+
+Y volvemos a la lista de películas:
+
+![a3](img/a3.png)
+
+Podemos observar que la lista volvió a su estaado base.
+
+Ahora usaremos el concepto de `cookie`, con el hash `session[]`, al cual le pasaremos los parametros `ratings` y `order`.	 
