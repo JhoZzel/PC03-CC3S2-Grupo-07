@@ -102,11 +102,6 @@ Se puede observar que se ha iniciado el servidor de desarrollo de Rails. Al arra
 
 ![](img/16.png)
 
-## Despliegue inicial de Heroku / Render
-@Angello
-
-
-
 
 ## Parte 1: filtrar la lista de películas por clasificación
 
