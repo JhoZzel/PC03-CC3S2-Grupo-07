@@ -1,4 +1,6 @@
-# PC03-CC3S2-Grupo-07: Introducción a Rails: Agrega funciones a RottenPotatoes
+# PC03-CC3S2-Grupo-07
+## Tema: Introducción a Rails: Agrega funciones a RottenPotatoes
+
 - Chavez Chico Joel Jhotan 20210058J
 - Espinoza Pari Franklin 20210135D
 - Pisfil Puicon Angello Jamir 20210035J
@@ -107,3 +109,136 @@ Se puede observar que se ha iniciado el servidor de desarrollo de Rails. Al arra
 
 
 ## Parte 1: filtrar la lista de películas por clasificación
+
+En esta primera parte, se procede a crear la sección de filtrado en el formulario, realizando modificaciones en el archivo `index.html.erb`. El código agregado introduce un formulario que incluye casillas de verificación para cada clasificación MPAA disponible. Estas casillas permitirán al usuario filtrar la lista de películas según sus preferencias de clasificación.
+
+```html
+<!--  This file is app/views/movies/index.html.erb -->
+<h2>All Movies</h2>
+
+<%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
+  <div class="form-group">
+    <%= label_tag 'Include:' %>
+    <% Movie.all_ratings.each do |rating| %>
+      <div class="form-check form-check-inline">
+        <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
+        <%= check_box_tag "ratings[#{rating}]", "1", @ratings_to_show.nil? ? true : @ratings_to_show.include?(rating), class: 'form-check-input' %>
+      </div>
+    <% end %>
+  </div>
+  <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
+<% end %>
+
+
+<table class="table table-striped col-md-12" id="movies">
+  <thead>
+    <tr>
+      <th>Movie Title</th>
+      <th>Rating</th>
+      <th>Release Date</th>
+      <th>More Info</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @movies.each do |movie| %>
+      <tr>
+        <td>
+          <%= movie.title %>
+        </td>
+        <td>
+          <%= movie.rating %>
+        </td>
+        <td>
+          <%= movie.release_date %>
+        </td>
+        <td>
+          <%= link_to "More about #{movie.title}", movie_path(movie) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
+```
+Las casillas de verificación se generan dinámicamente a partir de las clasificaciones disponibles en el modelo `Movie`. El formulario también incluye un botón "Refresh" que, al ser presionado, actualizará la lista de películas según las clasificaciones MPAA seleccionadas.
+
+Es importante destacar que el código proporcionado utiliza `form_tag` y `check_box_tag` para generar el formulario y las casillas de verificación de manera adecuada. Además, se implementa lógica condicional para asegurar que las casillas de verificación estén inicialmente marcadas cuando el usuario visita la página por primera vez. Este formulario establece la base para la implementación del filtrado dinámico de películas basado en las clasificaciones MPAA seleccionadas por el usuario.
+
+Sin embargo aún hay detalles que falta cambiar, es así en movie.rb (app/models/movie.rb), definimos un método de clase all_ratings en el modelo Movie. Este método devuelve un array con todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R'). Este método se convierte en un método de clase porque se llama directamente en la clase Movie y no en una instancia de la clase. 
+
+```rb
+# app/models/movie.rb
+class Movie < ActiveRecord::Base
+  def self.all_ratings
+    # Devuelve un array con todas las clasificaciones posibles
+    ['G', 'PG', 'PG-13', 'R']
+  end
+end
+```
+
+Luego, en movies_controller.rb, específicamente en la acción index, asignas la variable de instancia @all_ratings con el resultado de llamar al método all_ratings del modelo Movie. Esta variable se utilizará en la vista para generar las casillas de verificación del formulario de filtrado.
+
+```RB
+# app/controllers/movies_controller.rb
+def index
+  @movies = Movie.all
+  @all_ratings = Movie.all_ratings
+end
+```
+
+Ahora, en nuestra vista `index.html.erb`, el formulario utiliza `@all_ratings` para generar dinámicamente las casillas de verificación. Esto permite que el usuario seleccione las clasificaciones MPAA con las cuales desea filtrar la lista de películas.
+
+**Pregunta**: ¿Por qué el controlador debe configurar un valor predeterminado para @ratings_to_show incluso si no se marca nada?
+
+**Respuesta**:
+El controlador debe configurar un valor predeterminado para `@ratings_to_show` incluso si no se marca nada porque este valor determina si las casillas de verificación deben mostrarse como marcadas o no en la vista. La documentación de Rails para `check_box_tag` indica que el tercer valor, que en este caso es `@ratings_to_show.include?(rating)`, evalúa si la casilla de verificación debe mostrarse marcada.
+
+Si no se configura un valor predeterminado para `@ratings_to_show`, y el usuario no ha marcado ninguna casilla previamente, `@ratings_to_show` sería `nil`. En este caso, al evaluar `nil.include?(rating)` en la vista, se produciría un error, ya que `nil` no es una colección enumerable.
+
+Al configurar un valor predeterminado, como incluir todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R'), se garantiza que, incluso si el usuario no ha marcado ninguna casilla, `@ratings_to_show` sea una colección válida y la evaluación `@ratings_to_show.include?(rating)` sea segura en la vista. Esto permite que, al presionar el botón "Refresh" sin seleccionar ninguna clasificación específica, se muestren todas las películas y se marquen todas las casillas de verificación por defecto.
+
+
+Hasta el momento, hemos observado que la aplicación no implementa correctamente la funcionalidad de filtrado; aunque los botones de clasificación están presentes, no tienen un impacto real. Para corregir esto, se han realizado modificaciones sustanciales tanto en la clase controladora como en el modelo movie.rb. A continuación, se detallan los cambios realizados para abordar esta situación.
+
+```ruby
+# app/controllers/movies_controller.rb
+def index
+  # Obtener todas las películas o filtrar por calificaciones seleccionadas
+  @movies = params[:ratings] ? Movie.with_ratings(params[:ratings].keys) : Movie.all
+
+  # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
+  @ratings_to_show = params[:ratings]&.keys
+
+  # Obtener todas las clasificaciones posibles para construir las casillas de verificación
+  @all_ratings = Movie.all_ratings
+end 
+```
+
+1. `@movies = params[:ratings] ? Movie.with_ratings(params[:ratings].keys) : Movie.all`: Aquí se determina si el usuario ha seleccionado alguna clasificación utilizando las casillas de verificación. Si se han seleccionado clasificaciones, se filtran las películas usando el método `with_ratings` del modelo `Movie`; de lo contrario, se obtienen todas las películas.
+
+2. `@ratings_to_show = params[:ratings]&.keys`: Esta línea configura las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas. Se utiliza el operador `&.` para manejar el caso en que `params[:ratings]` es `nil`.
+
+3. `@all_ratings = Movie.all_ratings`: Se obtienen todas las clasificaciones posibles para construir las casillas de verificación en el formulario.
+
+```ruby
+# app/models/movie.rb
+class Movie < ActiveRecord::Base
+  
+  def self.with_ratings(ratings_list)
+    return all if ratings_list.nil? || ratings_list.empty?
+
+    where(rating: ratings_list)
+  end
+
+  def self.all_ratings
+    ['G', 'PG', 'PG-13', 'R']
+  end
+end
+```
+
+1. `self.with_ratings(ratings_list)`: Este método de clase en el modelo `Movie` recibe una lista de clasificaciones y devuelve una relación ActiveRecord que contiene las películas cuyas clasificaciones coinciden con las clasificaciones de la lista. Si la lista es `nil` o está vacía, se devuelven todas las películas.
+
+2. `self.all_ratings`: Este método de clase devuelve un array con todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R').
+
+## Parte 2: Ordenar la lista de películas
+
