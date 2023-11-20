@@ -373,4 +373,96 @@ Y volvemos a la lista de películas:
 
 Podemos observar que la lista volvió a su estaado base.
 
-Ahora usaremos el concepto de `cookie`, con el hash `session[]`, al cual le pasaremos los parametros `ratings` y `order`.	 
+Ahora usaremos el concepto de `cookie`, con el hash `session[]`, al cual le pasaremos los parametros `ratings` y `order`.
+
+En el siguiente fragmento de codigo dentro de la función `index` del controlador `movies_controller`:
+
+~~~ruby
+  def index
+    # Obtener todas las películas o filtrar por calificaciones seleccionadas
+    @movies = Movie.all
+
+    # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
+    @ratings_to_show = params[:ratings] || session[:ratings] || []
+
+    # Obtenemos todas las clasificaciones posibles para construir las casillas de verificación
+    @all_ratings = Movie.all_ratings
+
+    # Verifica si queremos ver sin restricciones
+    if params[:order].nil? && params[:ratings].nil?
+      session[:ratings] = nil
+      session[:order] = nil
+    end
+
+    # Verifica si se proporciona un orden y configura las variables de control
+    if params[:order].nil? && !session[:order].nil?
+        params[:order] = session[:order]
+    elsif !params[:order].nil?
+      @order_column = params[:order][:column]
+      @order_direction = params[:order][:direction]
+      @movies = @movies.order("#{@order_column} #{@order_direction}")
+      session[:order] = params[:order]
+    end
+    
+    # Filtramos las películas por clasificaciones seleccionadas
+    if params[:ratings].nil? && !session[:ratings].nil?
+        params[:ratings] = session[:ratings]
+    elsif !params[:ratings].nil?
+      selected_ratings = params[:ratings].keys
+      @movies = @movies.with_ratings(selected_ratings)
+      session[:ratings] = params[:ratings]
+    end
+  end
+~~~
+
+Podemos observar como es que, en caso no hayamos escogido una opción de filtrado, nuestra `cookie` vuelve a su estado base:
+
+~~~ruby
+  if params[:order].nil? && params[:ratings].nil?
+      session[:ratings] = nil
+      session[:order] = nil
+    end
+~~~
+
+En caso de que no hayamos escogido nada, porque vengamos de la vista de detalles de una pelicula, obtenemos la información de la `cookie`:
+
+~~~ruby
+  if params[:order].nil? && !session[:order].nil?
+        params[:order] = session[:order]
+~~~
+En caso hubieramos escogido una clasificación, la cookie se actualiza:
+
+~~~ruby
+    elsif !params[:order].nil?
+      @order_column = params[:order][:column]
+      @order_direction = params[:order][:direction]
+      @movies = @movies.order("#{@order_column} #{@order_direction}")
+      session[:order] = params[:order]
+    end
+~~~
+
+Analogamente con el ordenamiento:
+
+~~~ruby
+    if params[:ratings].nil? && !session[:ratings].nil?
+        params[:ratings] = session[:ratings]
+    elsif !params[:ratings].nil?
+      selected_ratings = params[:ratings].keys
+      @movies = @movies.with_ratings(selected_ratings)
+      session[:ratings] = params[:ratings]
+    end
+~~~
+
+Y ahora podemos ver el correcto funcionamiento del guardado de información persistente:
+
+Escogemos nuestro filtro:
+
+![a4](img/a4.PNG)
+
+Ingresamos a ver el detalle de una película:
+
+![a5](img/a5.PNG)
+
+Y volvemos a la lista con nuetra opción anterior recordada correctamente: 
+
+![a6](img/a6.PNG)
