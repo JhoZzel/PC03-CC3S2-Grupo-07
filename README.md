@@ -92,7 +92,7 @@ movies.each do |movie|
 end
 ```
 
-Cada hash dentro del arreglo `movies` representa un conjunto de datos para una película específica. La tarea de semilla (`rake db:seed`) utiliza estos datos para poblar la base de datos con valores iniciales. La estructura del archivo de semilla permite la creación eficiente de registros en la base de datos cuando sea necesario inicializarla con datos predefinidos. En resumen, al ejecutar `rake db:seed`, se insertarán estos datos en la tabla correspondiente de la base de datos, proporcionando un conjunto inicial de registros para trabajar en la aplicación.
+Cada hash dentro del arreglo `movies` representa un conjunto de datos para una película específica. La tarea de semilla (`rake db:seed`) utiliza estos datos para poblar la base de datos con valores iniciales. La estructura del archivo de semilla permite la creación eficiente de registros en la base de datos cuando sea necesario inicializarla con datos predefinidos.
 
 Muy bien ahora vamos a desplegar nuestra app para poder visualizarla en nuestra máquina local, con ayuda del comando `rails server`
 
@@ -157,8 +157,6 @@ En esta primera parte, se procede a crear la sección de filtrado en el formular
 ```
 Las casillas de verificación se generan dinámicamente a partir de las clasificaciones disponibles en el modelo `Movie`. El formulario también incluye un botón "Refresh" que, al ser presionado, actualizará la lista de películas según las clasificaciones MPAA seleccionadas.
 
-Es importante destacar que el código proporcionado utiliza `form_tag` y `check_box_tag` para generar el formulario y las casillas de verificación de manera adecuada. Además, se implementa lógica condicional para asegurar que las casillas de verificación estén inicialmente marcadas cuando el usuario visita la página por primera vez. Este formulario establece la base para la implementación del filtrado dinámico de películas basado en las clasificaciones MPAA seleccionadas por el usuario.
-
 Sin embargo aún hay detalles que falta cambiar, es así en movie.rb (app/models/movie.rb), definimos un método de clase all_ratings en el modelo Movie. Este método devuelve un array con todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R'). Este método se convierte en un método de clase porque se llama directamente en la clase Movie y no en una instancia de la clase. 
 
 ```rb
@@ -191,7 +189,6 @@ El controlador debe configurar un valor predeterminado para `@ratings_to_show` i
 Si no se configura un valor predeterminado para `@ratings_to_show`, y el usuario no ha marcado ninguna casilla previamente, `@ratings_to_show` sería `nil`. En este caso, al evaluar `nil.include?(rating)` en la vista, se produciría un error, ya que `nil` no es una colección enumerable.
 
 Al configurar un valor predeterminado, como incluir todas las clasificaciones posibles ('G', 'PG', 'PG-13', 'R'), se garantiza que, incluso si el usuario no ha marcado ninguna casilla, `@ratings_to_show` sea una colección válida y la evaluación `@ratings_to_show.include?(rating)` sea segura en la vista. Esto permite que, al presionar el botón "Refresh" sin seleccionar ninguna clasificación específica, se muestren todas las películas y se marquen todas las casillas de verificación por defecto.
-
 
 Hasta el momento, hemos observado que la aplicación no implementa correctamente la funcionalidad de filtrado; aunque los botones de clasificación están presentes, no tienen un impacto real. Para corregir esto, se han realizado modificaciones sustanciales tanto en la clase controladora como en el modelo movie.rb. A continuación, se detallan los cambios realizados para abordar esta situación.
 
