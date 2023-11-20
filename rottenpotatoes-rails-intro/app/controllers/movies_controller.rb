@@ -10,7 +10,7 @@ class MoviesController < ApplicationController
     @movies = Movie.all
 
     # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
-    @ratings_to_show = params[:ratings] || session[:ratings] || []
+    @ratings_to_show = params[:ratings] || []
 
     # Obtenemos todas las clasificaciones posibles para construir las casillas de verificación
     @all_ratings = Movie.all_ratings
@@ -23,11 +23,17 @@ class MoviesController < ApplicationController
     end
 
     # Filtramos las películas por clasificaciones seleccionadas
-    if params[:ratings].present? || session[:ratings].present?
+    if params[:ratings].present?
+      # params[:ratings] = session[:ratings]
       selected_ratings = params[:ratings].keys
       @movies = @movies.with_ratings(selected_ratings)
-      session[:ratings] = selected_ratings
+      # session[:ratings] = selected_ratings
+    else
+      params[:ratings] = session[:ratings]
     end
+
+    session[:ratings] = params[:ratings]
+
   end
 
 
