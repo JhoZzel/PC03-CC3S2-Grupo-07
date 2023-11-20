@@ -10,10 +10,26 @@ class MoviesController < ApplicationController
     @movies = Movie.all
 
     # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
-    @ratings_to_show = params[:ratings] || []
+    @ratings_to_show = params[:ratings] || session[:ratings] || []
 
     # Obtener todas las clasificaciones posibles para construir las casillas de verificación
     @all_ratings = Movie.all_ratings
+
+    # Verifica si no se pasaron parámetros de clasificación o filtrado en la URL
+    if params[:sort_by].nil? && params[:ratings].nil?
+      # Recupera las configuraciones de clasificación y filtrado desde session[]
+      # Esto restaurará las configuraciones previas almacenadas en las cookies
+      params[:sort_by] = session[:sort_by] if session[:sort_by].present?
+      params[:ratings] = session[:ratings] if session[:ratings].present?
+
+      # Redirige a la URL con las configuraciones almacenadas en session[]
+      redirect_to movies_path(params)
+      return
+    end
+
+    # Guarda las configuraciones de clasificación y filtrado en session[]
+    session[:sort_by] = params[:sort_by]
+    session[:ratings] = params[:ratings]
 
     # Verifica si se proporciona un orden y configura las variables de control
     if params[:order].present?
