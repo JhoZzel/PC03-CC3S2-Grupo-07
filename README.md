@@ -237,3 +237,116 @@ end
 
 ## Parte 2: Ordenar la lista de películas
 
+Antes de comenzar, tenemos que trabajar en nuestra rama. Para esto vamos a crear una rama llamada `Parte02-Franklin`, y nos moveremos a esta rama usando el comando `git checkout Parte02-Franklin`.
+
+![f4](img/f4.png)
+
+Ahora si comenzamos a trabajar, ***Que se busca?*** Se busca habilitar la ordenación de la tabla a través de enlaces clicables en los encabezados de las columnas `Movie Title` y `Release Date`. Al hacer clic en un encabezado, la lista debería recargarse y ordenarse en función de la columna seleccionada. Por ejemplo, al hacer clic en "Release  Date", las películas deberían mostrarse con las más antiguas primero. Además, se resalta visualmente el encabezado de la columna seleccionada. 
+
+Para implementar esto, se emplean enlaces HTML con la ayuda de la función `link_to`. Cada enlace apunta a la ruta RESTful correspondiente para recuperar la lista de películas ordenada. Se asignan identificadores únicos (IDs) a los enlaces para `title` y `release_date` para facilitar la manipulación del Modelo de objecto de documento (Document Object Model (**DOM**)). También se aplican clases CSS, como **"hilite"** y una clase de **color de Bootstrap**, para destacar el encabezado seleccionado.
+~~~ruby
+## Realizamos este cambio para darle estilo a nuestros encabezados
+ th.hilite {
+    background-color: #ffc107; /* Amarillo anaranjado de Bootstrap */
+  }
+~~~
+
+~~~erb
+# Realizamos este cambio en index.html.erb
+<table class="table table-striped col-md-12" id="movies">
+  <thead>
+    <tr>
+      <th class="<%= 'hilite' if @order_column == 'title' %>">
+        <%= link_to "Movie Title", movies_path(order: { column: 'title', direction: 'asc' }) %>
+      </th>
+      <th class="<%= 'hilite' if @order_column == 'rating' %>">
+        <%= link_to "Rating", movies_path(order: { column: 'rating', direction: 'asc' }) %>
+      </th>
+      <th class="<%= 'hilite' if @order_column == 'release_date' %>">
+        <%= link_to "Release Date", movies_path(order: { column: 'release_date', direction: 'asc' }) %>
+      </th>
+      <th>More Info</th>
+    </tr>
+  </thead>
+~~~
+
+y finalmente editamos nuestro controlador de la siguiente manera. Este código carga todas las películas y las ordena según las especificaciones proporcionadas en los parámetros de la solicitud, si los hay. 
+
+~~~ruby
+class MoviesController < ApplicationController
+  def index
+    @movies = Movie.all
+	
+    if params[:order].present?
+      @order_column = params[:order][:column]
+      @order_direction = params[:order][:direction]
+      @movies = @movies.order("#{@order_column} #{@order_direction}")
+    end
+  end
+
+end
+~~~
+
+Se manda a ejecutar el servidor,
+
+![f0](img/f0.png)
+
+Ahora podemos observar en el localhost lo siguiente.
+
+![f1](img/f1.png)
+
+Ahora debemos recordar tanto el filtro de clasificación como el ordenamiento de los encabezados. Para esto vamos hacer unos cambios en el `index.html.erb`. Vamos a modificar la llamada a `movies_path` para incluir informacion sobre las calificaciones seleccionadas.
+
+~~~erb
+<thead>
+  <tr>
+    <th class="<%= 'hilite' if @order_column == 'title' %>">
+      <%= link_to "Movie Title", movies_path(order: { column: 'title', direction: 'asc' }, ratings: @ratings_to_show) %>
+    </th>
+    <th class="<%= 'hilite' if @order_column == 'rating' %>">
+      <%= link_to "Rating", movies_path(order: { column: 'rating', direction: 'asc' }, ratings: @ratings_to_show) %>
+    </th>
+    <th class="<%= 'hilite' if @order_column == 'release_date' %>">
+      <%= link_to "Release Date", movies_path(order: { column: 'release_date', direction: 'asc' }, ratings: @ratings_to_show) %>
+    </th>
+    <th>More Info</th>
+  </tr>
+</thead>
+~~~
+
+Luego vamos a editar el controlador, ahora primero vamos obtener todas las peliculas que se asignaran a `@movies`, para luego configurar las variables relacionadas con las clasificaciones y ordenamiento. Ya despues, si se proporcionan clasificaciones `(params[:ratings].present?)`, filtra las películas usando el método `with_ratings`. Finalmente, si se proporciona un orden `(params[:order].present?)`, ordena las películas en función de los parámetros de orden recibidos.
+
+~~~ruby
+  def index
+    # Obtener todas las películas o filtrar por calificaciones seleccionadas
+    @movies = Movie.all
+
+    # Configurar las clasificaciones seleccionadas para que las casillas de verificación se muestren como marcadas
+    @ratings_to_show = params[:ratings] || []
+
+    # Obtener todas las clasificaciones posibles para construir las casillas de verificación
+    @all_ratings = Movie.all_ratings
+
+    # Verifica si se proporciona un orden y configura las variables de control
+    if params[:order].present?
+      @order_column = params[:order][:column]
+      @order_direction = params[:order][:direction]
+      @movies = @movies.order("#{@order_column} #{@order_direction}")
+    end
+
+    # Filtramos las películas por clasificaciones seleccionadas
+    if params[:ratings].present?
+      selected_ratings = params[:ratings].keys
+      @movies = @movies.with_ratings(selected_ratings)
+    end
+  end
+~~~
+Finalizando esta seccion, podemos observar que si recuerda ahora el orden de encabezado y la clasificacion. 
+
+![f2](img/f2.png)
+
+Durante este apartado hemos realizado varios `commits` que se pueden visualizar en el github compartido, pero recordemos que estamos en una rama llamada `Parte02-Franklin`. Para poder actualizar la rama `main` tenemos que realizar un `merge`.
+Nota: Tenemos que encontrarnos en la rama `main`, y desde ahi realizar el `merge`.
+
+![f3](img/f3.png)
+
