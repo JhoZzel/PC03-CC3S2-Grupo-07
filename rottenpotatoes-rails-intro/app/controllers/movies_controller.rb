@@ -21,7 +21,6 @@ class MoviesController < ApplicationController
     end
 
     # Verifica si se proporciona un orden y configura las variables de control
-
     if params[:order].nil? && !session[:order].nil?
         params[:order] = session[:order]
     else 
@@ -41,7 +40,6 @@ class MoviesController < ApplicationController
     end
 
   end
-
 
   def new
     # default: render 'new' template
