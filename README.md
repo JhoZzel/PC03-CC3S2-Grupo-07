@@ -35,15 +35,15 @@ Una vez establecida la infraestructura inicial de nuestro proyecto, procederemos
 ![](img/10.png)
 
 
-Usando el `git branch Parte01-Joel` pudimos crear una nueva rama llamada `Parte01-Joel`. Luego, se realiza un cambio a esta nueva rama con el comando `git checkout Parte01-Joel`. Este proceso establece una rama separada para trabajar en una parte específica del proyecto, permitiendo a "Joel" realizar cambios y commits de manera aislada en esa parte del código sin afectar la rama principal.
+Usando el `git branch Parte01-Joel` pudimos crear una nueva rama llamada `Parte01-Joel`. Luego, se realiza un cambio a esta nueva rama con el comando `git checkout Parte01-Joel`.
 
-Ahora bien, vamos a trabajar en esta rama siguiendo las demás instrucciones de la guía. Para comenzar, se indica que ejecutemos el comando `bundle install --without production`. Este comando se utiliza para instalar las gemas y dependencias especificadas en el archivo `Gemfile`, excluyendo aquellas relacionadas con el entorno de producción. De esta manera, se asegura la instalación de las dependencias necesarias para el desarrollo sin cargar aquellas destinadas únicamente al entorno de producción, optimizando así el entorno de trabajo.
+Ahora bien, vamos a trabajar en esta rama siguiendo las demás instrucciones de la guía. Para comenzar, se indica que ejecutemos el comando `bundle install --without production`. Este comando se utiliza para instalar las gemas y dependencias especificadas en el archivo `Gemfile`, excluyendo aquellas relacionadas con el entorno de producción.
 
 ![](img/11.png)
 ![](img/12.png)
 
 
-Finalmente, ejecutamos la migración inicial mediante el comando bin/rake db:migrate. Esta acción, al ser la primera migración, también implica la creación de la base de datos. El comando se encarga de aplicar las migraciones definidas en el proyecto, estableciendo la estructura inicial de la base de datos de acuerdo con las especificaciones proporcionadas en los archivos de migración.
+Finalmente, ejecutamos la migración inicial mediante el comando bin/rake db:migrate. Esta acción, al ser la primera migración, también implica la creación de la base de datos.
 
 ![](img/13.png)
 
