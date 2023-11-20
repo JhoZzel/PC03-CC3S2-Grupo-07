@@ -21,5 +21,11 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: customers_dkca
+  pool: 5
+  username: angello
+  password: 6P58vfr2bGERwAmfOv6PlwNhchtN5isp
+  host: dpg-ckjcufsl4vmc73d5pqt0-a
+  port: 5432

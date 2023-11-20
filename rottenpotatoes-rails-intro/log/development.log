@@ -4319,3 +4319,48 @@ Processing by MoviesController#index as HTML
   Rendered movies/index.html.erb within layouts/application (24.8ms)
   Rendered layouts/_flash.erb (0.3ms)
 Completed 200 OK in 554ms (Views: 539.9ms | ActiveRecord: 8.9ms)
+
+
+Started GET "/movies?utf8=%E2%9C%93&ratings%5BG%5D=1&ratings%5BPG%5D=1&ratings%5BPG-13%5D=1&commit=Refresh" for 127.0.0.1 at 2023-11-20 02:56:38 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (3.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by MoviesController#index as HTML
+  Parameters: {"utf8"=>"✓", "ratings"=>{"G"=>"1", "PG"=>"1", "PG-13"=>"1"}, "commit"=>"Refresh"}
+  [1m[35mMovie Load (1.3ms)[0m  SELECT "movies".* FROM "movies" WHERE "movies"."rating" IN ('G', 'PG', 'PG-13')
+  Rendered movies/index.html.erb within layouts/application (58.1ms)
+  Rendered layouts/_flash.erb (0.9ms)
+Completed 200 OK in 1391ms (Views: 1247.4ms | ActiveRecord: 5.4ms)
+
+
+Started GET "/movies?utf8=%E2%9C%93&ratings%5BG%5D=1&ratings%5BPG%5D=1&ratings%5BPG-13%5D=1&commit=Refresh" for 127.0.0.1 at 2023-11-20 02:56:42 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"utf8"=>"✓", "ratings"=>{"G"=>"1", "PG"=>"1", "PG-13"=>"1"}, "commit"=>"Refresh"}
+  [1m[36mMovie Load (5.3ms)[0m  [1mSELECT "movies".* FROM "movies" WHERE "movies"."rating" IN ('G', 'PG', 'PG-13')[0m
+  Rendered movies/index.html.erb within layouts/application (11.0ms)
+  Rendered layouts/_flash.erb (1.9ms)
+Completed 200 OK in 811ms (Views: 805.0ms | ActiveRecord: 5.3ms)
+
+
+Started GET "/movies?utf8=%E2%9C%93&ratings%5BG%5D=1&ratings%5BPG-13%5D=1&commit=Refresh" for 127.0.0.1 at 2023-11-20 02:56:45 -0500
+Processing by MoviesController#index as HTML
+  Parameters: {"utf8"=>"✓", "ratings"=>{"G"=>"1", "PG-13"=>"1"}, "commit"=>"Refresh"}
+  [1m[35mMovie Load (1.3ms)[0m  SELECT "movies".* FROM "movies" WHERE "movies"."rating" IN ('G', 'PG-13')
+  Rendered movies/index.html.erb within layouts/application (7.0ms)
+  Rendered layouts/_flash.erb (0.1ms)
+Completed 200 OK in 410ms (Views: 407.7ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/movies/1" for 127.0.0.1 at 2023-11-20 02:57:25 -0500
+Processing by MoviesController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mMovie Load (1.8ms)[0m  [1mSELECT  "movies".* FROM "movies" WHERE "movies"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered movies/show.html.erb within layouts/application (4.0ms)
+  Rendered layouts/_flash.erb (0.1ms)
+Completed 200 OK in 468ms (Views: 433.1ms | ActiveRecord: 1.8ms)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-11-20 02:57:40 -0500
+Processing by MoviesController#index as HTML
+  [1m[35mMovie Load (2.9ms)[0m  SELECT "movies".* FROM "movies"
+  Rendered movies/index.html.erb within layouts/application (16.6ms)
+  Rendered layouts/_flash.erb (0.1ms)
+Completed 200 OK in 518ms (Views: 514.1ms | ActiveRecord: 2.9ms)
