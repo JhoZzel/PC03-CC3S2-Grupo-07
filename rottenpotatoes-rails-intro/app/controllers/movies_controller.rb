@@ -17,11 +17,11 @@ class MoviesController < ApplicationController
 
     # Verifica si se proporciona un orden y configura las variables de control
 
-    if params[:ratings].nil? && !session[:ratings].nil?
-      params[:ratings] = session[:ratings]
-    end
-    
-    if params[:order].present?
+    if params[:order].nil? 
+      if !session[:order].nil?
+        params[:order] = session[:order]
+      end
+    else params[:order].present?
       @order_column = params[:order][:column]
       @order_direction = params[:order][:direction]
       @movies = @movies.order("#{@order_column} #{@order_direction}")
